@@ -1,0 +1,26 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sing_up_window</title>
+    <link rel="stylesheet" href="{% static 'sing_up_in/css/sing_up_in.css' %}">
+</head>
+<body>
+    <div class="container">
+        <img src="{% static 'sing_up_in/img/logo.png' %}" alt="">
+        <p>Welcome to the club, buddy</p>
+        <form>
+            <input type="text" placeholder="Name" required>
+            <input type="text" placeholder="Surname" required>
+            <input type="email" placeholder="Email" required>
+            <input type="password" placeholder="Password" required>
+          </form>
+        <p>
+            <a href="{% url 'sing_in' %}">Sing in</a>
+        </p>   
+        <button class="signup-button">Sign Up</button>
+    </div>
+</body>  
+</html>
