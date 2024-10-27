@@ -8,6 +8,27 @@
     <link rel="stylesheet" href="{% static 'main_work_window/css/main_work_window.css' %}">
 </head>
 <body>
-    
+    <aside class="sidebar">
+        <img src="{% static 'main_work_window/img/logo.png' %}" alt="Logo">
+        <a href="" class="menu-link">News</a>
+        <a href="" class="menu-link">Team</a>
+        <a href="" class="menu-link">Saved</a>
+        <a href="" class="menu-link">Tasks</a>
+
+        <div class="task-input-section">
+            <input type="text" class="task-input" placeholder="Enter task">
+            <a href="{% url 'add_task' %}" class="add-task-button">Add Task</a>
+        </div>
+
+        <div class="task-titles">
+            {% for task in tasks %}
+                <div class="task-title">{{ task.title }}</div>
+            {% empty %}
+                <p>No tasks available</p>
+            {% endfor %}
+        </div>
+        
+        
+    </aside>
 </body>
 </html>

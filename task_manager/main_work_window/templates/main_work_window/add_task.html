@@ -1,0 +1,52 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>add_task</title>
+    <link rel="stylesheet" href="{% static 'main_work_window/css/add_task.css' %}">
+</head>
+<body>
+    <aside class="sidebar">
+        <img src="{% static 'main_work_window/img/logo.png' %}" alt="Logo">
+        <a href="" class="menu-link">News</a>
+        <a href="" class="menu-link">Team</a>
+        <a href="" class="menu-link">Saved</a>
+        <a href="" class="menu-link">Tasks</a>
+
+        <div class="task-input-section">
+            <form method="post" enctype="multipart/form-data" action="{% url 'add_task' %}">
+                {% csrf_token %}
+                <input type="text" name="title" class="task-input" placeholder="Enter task">
+                <button type="submit" class="add-task-button">Add Task</button>
+            </form>
+        </div>
+
+        <div class="task-titles">
+            {% for task in tasks %}
+                <div class="task-title">{{ task.title }}</div>
+            {% empty %}
+                <p>No tasks available</p>
+            {% endfor %}
+        </div>
+    </aside>
+
+    <div class="form-container">
+        <form method="post" enctype="multipart/form-data" class="task-form">
+            {% csrf_token %}
+            {{ form.title }}<br>
+            {{ form.task_description }}<br>
+            {{ form.collaborators }}<br>
+            {{ form.status }}<br>
+            {{ form.priority }}<br>
+            {{ form.budget }}<br>
+            {{ form.attachments }}<br>
+            {{ form.dead_line }}<br>
+            <span style="color: red;">{{ error }}</span>
+            <button type="submit">Додати завдання</button>
+        </form>
+    </div>
+
+</body>
+</html>
