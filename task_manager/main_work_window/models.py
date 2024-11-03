@@ -7,7 +7,21 @@ class Task(models.Model):
     status = models.TextField('Статус')
     priority = models.TextField('Пріорітет')
     budget = models.TextField('Бюджет')
-    attachments = models.FileField(upload_to='documents/')
+    attachments = models.FileField(upload_to='documents/', blank=True, null=True)
+    dead_line = models.DateField('Дедлайн')
+
+    def __str__(self):
+        return self.title
+
+class Subtask(models.Model):
+    task = models.ForeignKey(Task, on_delete=models.CASCADE, related_name='subtasks')
+    title = models.TextField('Назва підзавдання')
+    task_description = models.TextField('Опис підзавдання')
+    collaborators = models.TextField('Працівники')
+    status = models.TextField('Статус')
+    priority = models.TextField('Пріорітет')
+    budget = models.TextField('Бюджет')
+    attachments = models.FileField(upload_to='documents/', blank=True, null=True)
     dead_line = models.DateField('Дедлайн')
 
     def __str__(self):

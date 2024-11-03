@@ -4,12 +4,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Додати Завдання</title>
-    <link rel="stylesheet" href="{% static 'main_work_window/css/add_task.css' %}">
+    <title>Додати підзавдання</title>
+    <link rel="stylesheet" href="{% static 'main_work_window/css/add_subtask.css' %}">
 </head>
 <body>
     <aside class="sidebar">
-        <img src="{% static 'main_work_window/img/logo.png' %}" alt="Logo"  class="sidebar-logo">
+        <img src="{% static 'main_work_window/img/logo.png' %}" alt="Logo" class="sidebar-logo">
         <a href="#" class="menu-link">News</a>
         <a href="#" class="menu-link">Team</a>
         <a href="#" class="menu-link">Saved</a>
@@ -22,7 +22,7 @@
 
         <div class="task-titles">
             {% for task in tasks %}
-                <div  data-task-id="{{ task.id }}">
+                <div data-task-id="{{ task.id }}">
                     <a href="{% url 'task_detail' task.id %}" class="task-link">{{ task.title }}</a>
                     <form method="post" action="{% url 'delete_task' task.id %}" style="display: inline;">
                         {% csrf_token %}
@@ -47,7 +47,8 @@
             {{ form.attachments }}<br>
             {{ form.dead_line }}<br>
             <span style="color: red;">{{ error }}</span>
-            <button type="submit">Додати завдання</button>
+            <button type="submit">Додати підзавдання</button>
+            <a href="{% url 'task_detail' task.id %}" class="back-button">Назад до деталей завдання</a>
         </form>
     </div>
 </body>
