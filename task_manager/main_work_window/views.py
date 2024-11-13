@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.views.decorators.http import require_POST
-from .models import Task, Subtask
-from .forms import TaskForm, SubtaskForm 
+from .models import Task, Subtask, Comment
+from .forms import TaskForm, SubtaskForm, CommentForm
 
 def add_task(request):
     error = ''
@@ -67,3 +67,21 @@ def delete_subtask(request, subtask_id):
     if request.method == 'POST':
         subtask.delete()
     return redirect('task_detail', task_id=task_id)
+
+def news(request):
+    tasks = Task.objects.all()
+    comments = Comment.objects.all()
+
+    if request.method == 'POST':
+        form = CommentForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('news')
+    else:
+        form = CommentForm()
+
+    return render(request, 'main_work_window/news.html', {
+        'tasks': tasks,
+        'comments': comments,
+        'form': form,
+    })

@@ -1,6 +1,6 @@
 from django import forms
 from django.forms import ModelForm, TextInput, Textarea, DateInput, ClearableFileInput
-from .models import Task, Subtask
+from .models import Task, Subtask, Comment
 
 class TaskForm(ModelForm):
     attachments = forms.FileField(required=False)
@@ -35,3 +35,12 @@ class SubtaskForm(ModelForm):
             'attachments': ClearableFileInput(attrs={'placeholder': 'Файл', 'accept': '*/*'}),
             'dead_line': DateInput(attrs={'placeholder': 'Дедлайн'}),
         }
+
+class CommentForm(forms.ModelForm):
+    class Meta:
+        model = Comment
+        fields = ['text']
+
+    widgets = {
+        'text': forms.Textarea(attrs={'placeholder': 'Напишіть свій коментар...', 'rows': 4}),
+    }

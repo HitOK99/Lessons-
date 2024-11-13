@@ -1,14 +1,32 @@
 {% load static %}
 <!DOCTYPE html>
-<html lang="uk">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Додати Завдання</title>
-    <link rel="stylesheet" href="{% static 'main_work_window/css/add_task.css' %}">
+    <link rel="stylesheet" href="{% static 'main_work_window/css/news.css' %}">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v6.6.0/css/all.css">
+    <title>News</title>
 </head>
 <body>
+
+    <div class="comment-list">
+        {% for comment in comments %}
+            <p>{{ comment.text }}</p>
+        {% empty %}
+            <p>Коментарів ще немає</p>
+        {% endfor %}
+    </div>
+
+    <div class="comment-section">
+        <form method="post" action="{% url 'news' %}">
+            {% csrf_token %}
+            <div class="comment-input">
+                {{ form.text }}
+            </div>
+            <button type="submit" class="submit-comment">Зберегти коментар</button>
+        </form>
+    </div>
 
     <div id="confirmModal" class="modal">
         <div class="modal-content">
@@ -45,21 +63,6 @@
         </div>
     </aside>
 
-    <div class="form-container">
-        <form method="post" enctype="multipart/form-data" class="task-form">
-            {% csrf_token %}
-            {{ form.title }}<br>
-            {{ form.task_description }}<br>
-            {{ form.collaborators }}<br>
-            {{ form.status }}<br>
-            {{ form.priority }}<br>
-            {{ form.budget }}<br>
-            {{ form.attachments }}<br>
-            {{ form.dead_line }}<br>
-            <span style="color: red;">{{ error }}</span>
-            <button type="submit">Додати завдання</button>
-        </form>
-    </div>
     <script src="{% static 'main_work_window/js/task_detail.js' %}"></script>
 </body>
 </html>

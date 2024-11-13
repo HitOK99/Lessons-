@@ -6,14 +6,24 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Додати підзавдання</title>
     <link rel="stylesheet" href="{% static 'main_work_window/css/add_subtask.css' %}">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v6.6.0/css/all.css">
 </head>
 <body>
+
+    <div id="confirmModal" class="modal">
+        <div class="modal-content">
+            <p>Ви впевнені, що хочете видалити <span id="taskName"></span>?</p>
+            <button id="confirmDelete" class="modal-button confirm">Так</button>
+            <button id="cancelDelete" class="modal-button cancel">Ні</button>
+        </div>
+    </div>
+    
     <aside class="sidebar">
         <img src="{% static 'main_work_window/img/logo.png' %}" alt="Logo" class="sidebar-logo">
-        <a href="#" class="menu-link">News</a>
-        <a href="#" class="menu-link">Team</a>
-        <a href="#" class="menu-link">Saved</a>
-        <a href="#" class="menu-link">Tasks</a>
+        <a href="{% url 'news' %}" class="menu-link">News <i class="fa-solid fa-newspaper"></i></a>
+        <a href="#" class="menu-link">Team <i class="fa-solid fa-people-group"></i></a>
+        <a href="#" class="menu-link">Saved <i class="fa-solid fa-bookmark"></i></a>
+        <a href="#" class="menu-link">Tasks <i class="fa-solid fa-list-check"></i></a>
 
         <div class="task-input-section">
             <input type="text" class="task-input" placeholder="Введіть завдання">
@@ -26,8 +36,8 @@
                     <a href="{% url 'task_detail' task.id %}" class="task-link">{{ task.title }}</a>
                     <form method="post" action="{% url 'delete_task' task.id %}" style="display: inline;">
                         {% csrf_token %}
-                        <button type="submit" class="delete-button">Видалити</button>
-                    </form>
+                        <button type="button" class="delete-button" onclick="confirmDeletion('{{ task.title }}', this)">Видалити</button>
+                    </form>                    
                 </div>
             {% empty %}
                 <p>Немає доступних завдань</p>
@@ -51,5 +61,6 @@
             <a href="{% url 'task_detail' task.id %}" class="back-button">Назад до деталей завдання</a>
         </form>
     </div>
+    <script src="{% static 'main_work_window/js/task_detail.js' %}"></script>
 </body>
 </html>
