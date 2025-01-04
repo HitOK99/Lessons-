@@ -1,0 +1,115 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Деталі Завдання</title>
+    <link rel="stylesheet" href="{% static 'main_work_window/css/task_detail.css' %}">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v6.6.0/css/all.css">
+</head>
+<body>
+
+    <div id="taskModal" class="task-modal">
+        <div class="task-modal-content">
+            <span class="close-modal" onclick="closeModal()">×</span>
+            <h1 id="modalTitle"></h1>
+            <p id="modalDescription"></p>
+        </div>
+    </div>
+
+    <div id="confirmModal" class="modal">
+        <div class="modal-content">
+            <p>Ви впевнені, що хочете видалити <span id="taskName"></span>?</p>
+            <button id="confirmDelete" class="modal-button confirm">Так</button>
+            <button id="cancelDelete" class="modal-button cancel">Ні</button>
+        </div>
+    </div>
+
+    <aside class="sidebar">
+        <img src="{% static 'main_work_window/img/logo.png' %}" alt="Logo" class="sidebar-logo">
+        <a href="{% url 'news' %}" class="menu-link">News <i class="fa-solid fa-newspaper"></i></a>
+        <a href="#" class="menu-link">Team <i class="fa-solid fa-people-group"></i></a>
+        <a href="#" class="menu-link">Saved <i class="fa-solid fa-bookmark"></i></a>
+        <a href="#" class="menu-link">Tasks <i class="fa-solid fa-list-check"></i></a>
+
+        <div class="task-input-section">
+            <input type="text" class="task-input" placeholder="Введіть завдання">
+            <a href="{% url 'add_task' %}" class="add-task-button">Додати Завдання</a>
+        </div>
+
+        <div class="task-titles">
+            {% for task in tasks %}
+                <div data-task-id="{{ task.id }}">
+                    <a href="{% url 'task_detail' task.id %}" class="task-link">{{ task.title }}</a>
+                    <form method="post" action="{% url 'delete_task' task.id %}" style="display: inline;">
+                        {% csrf_token %}
+                        <button type="button" class="delete-button" onclick="confirmDeletion('{{ task.title }}', this)">Видалити</button>
+                    </form>
+                </div>
+            {% empty %}
+                <p>Немає доступних завдань</p>
+            {% endfor %}
+        </div>
+    </aside>
+
+    <div class="form-container">
+        <h1 class="task-title" data-description="{{ task.task_description }}">{{ task.title }}</h1>
+        <a href="{% url 'add_subtask' task.id %}" class="add-subtask-button">Додати Підзавдання</a>
+        <div class="task-details-background">
+            <div class="task-details">
+                <div class="task-labels">
+                    <div class="task-detail">Назва</div>
+                    <div class="task-detail">Співпрацівники</div>
+                    <div class="task-detail">Статус</div>
+                    <div class="task-detail">Пріоритет</div>
+                    <div class="task-detail">Бюджет</div>
+                    <div class="task-detail">Вкладення</div>
+                    <div class="task-detail">Кінцевий термін</div>
+                </div>
+
+                {% for subtask in task.subtasks.all %}
+                    <div class="task-values">
+                        <div class="task-value">
+                            <form method="post" action="{% url 'delete_subtask' subtask.id %}" class="delete-subtask-form">
+                                {% csrf_token %}
+                                <button type="button" class="delete-subtask-button" onclick="confirmDeletion('{{ subtask.title }}', this)">🗑️</button>
+                            </form>
+                            <div class="subtask-title" data-description="{{ subtask.task_description }}">{{ subtask.title }}</div>
+                        </div>
+                        <div class="task-value">{{ subtask.collaborators }}</div>
+                        <div class="task-value">{{ subtask.status }}</div>
+                        <div class="task-value">{{ subtask.priority }}</div>
+                        <div class="task-value">{{ subtask.budget }}</div>
+                        <div class="task-value">
+                            {% if subtask.attachments %}
+                                <a href="{{ subtask.attachments.url }}" download class="attachment-emoji" title="Завантажити">💾</a>
+                            {% else %}
+                                <span>Немає файлу</span>
+                            {% endif %}
+                        </div>
+                        <div class="task-value">{{ subtask.dead_line }}</div>
+                    </div>
+                {% endfor %}
+            
+                <div class="task-values">
+                    <div class="task-value empty"></div>
+                    <div class="task-value">{{ task.collaborators }}</div>
+                    <div class="task-value">{{ task.status }}</div>
+                    <div class="task-value">{{ task.priority }}</div>
+                    <div class="task-value">{{ task.budget }}</div>
+                    <div class="task-value">
+                        {% if task.attachments %}
+                            <a href="{{ task.attachments.url }}" download class="attachment-emoji" title="Завантажити">💾</a>
+                        {% else %}
+                            <span>Немає файлу</span>
+                        {% endif %}
+                    </div>
+                    <div class="task-value">{{ task.dead_line }}</div>
+                </div>
+            </div>            
+        </div>
+    </div>
+    <script src="{% static 'main_work_window/js/task_detail.js' %}"></script>
+</body>
+</html>
